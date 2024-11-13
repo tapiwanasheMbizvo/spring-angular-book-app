@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Builder
 @SuperBuilder
 @Table(name = "_tokens")
 public class Token {

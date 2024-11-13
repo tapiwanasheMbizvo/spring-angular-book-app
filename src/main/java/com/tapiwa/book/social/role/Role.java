@@ -5,6 +5,7 @@ import com.tapiwa.book.social.user.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -15,10 +16,10 @@ import java.util.List;
 
 @Data
 @Entity
-@Builder
 @SuperBuilder
 @Table(name = "_user_roles")
 @EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor
 public class Role {
 
     @Id

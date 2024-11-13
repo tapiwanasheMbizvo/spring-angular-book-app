@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.actuate.endpoint.SecurityContext;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +23,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private  final  JwtUtil jwtUtil;
@@ -32,15 +34,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     @NonNull  HttpServletResponse response,
                                     @NonNull  FilterChain filterChain) throws ServletException, IOException {
 
-        if (request.getServletPath().contains("/api/v1/auth")){
+        log.info("Processing authentication for '{}'", request.getServletPath());
 
+        if (request.getServletPath().contains("/auth/register")){
             filterChain.doFilter(request, response);
             return;
         }
-
         final String authorizationHeader = request.getHeader(AUTHORIZATION);
         final String jwt;
         final String email;
+
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
             email = jwtUtil.extractEmail(jwt);
@@ -58,7 +61,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(request, response);
         } else {
-            throw new IllegalStateException("Invalid Token");
+            throw new IllegalStateException("Invalid Token for user role");
         }
     }
 }

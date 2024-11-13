@@ -1,6 +1,7 @@
 package com.tapiwa.book.social.auth;
 
 import com.tapiwa.book.social.messenger.EmailService;
+import com.tapiwa.book.social.messenger.EmailTemplate;
 import com.tapiwa.book.social.role.RoleRepository;
 import com.tapiwa.book.social.user.Token;
 import com.tapiwa.book.social.user.TokenRepository;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -44,9 +44,14 @@ public class AuthenticationService {
 
     }
 
-    private void sendValidationEmail(User user) {
+    private void sendValidationEmail(User user)  {
 
         var newToken = generateAndSaveToken(user);
+
+        emailService.sendEmail(user.getUsername(), EmailTemplate.ACTIVATE_ACCOUNT,
+                user.fullName(),
+                "http://localhost:8080/auth/confirm?token=" + newToken,
+                newToken, "Account Activation Email");
 
     }
 
@@ -65,7 +70,7 @@ public class AuthenticationService {
 
     private String generateActivationCode(int length) {
 
-        String chars = "Z1234567890";
+        String chars = "1234567890";
 
         StringBuilder code = new StringBuilder();
 

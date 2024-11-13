@@ -16,10 +16,10 @@ import java.util.function.Function;
 
 @Service
 public class JwtUtil {
-    @Value("${application.security.jwt.expiration-time}")
-    private Long jwtExpiration;
-    @Value("${application.security.jwt.secret-key}")
-    private String secretKey;
+
+    private Long jwtExpiration = 1000L * 60 * 60 * 10;
+
+    private String secretKey = "4BA7D8CBBACA69DDAE81C764478E5";
 
     public String extractEmail(String jwt) {
         return extractClaim(jwt, Claims::getSubject);

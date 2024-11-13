@@ -20,7 +20,6 @@ import java.util.List;
 
 @Data
 @Entity
-@Builder
 @SuperBuilder
 @Table(name = "_users")
 @EntityListeners(AuditingEntityListener.class)
